@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox fx:id="root" prefHeight="500.0" minWidth="70.0" prefWidth="700.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8">
+  <children>
+    <MenuBar VBox.vgrow="NEVER">
+      <menus>
+        <Menu text="Datei">
+          <items>
+            <MenuItem fx:id="open" text="Tabelle öffnen" />
+            <MenuItem fx:id="save" text="Tabelle speichern" />
+            <MenuItem fx:id="close" text="Tabelle schließen" />
+          </items>
+        </Menu>
+        <Menu fx:id="search" text="Suchen" />
+      </menus>
+    </MenuBar>
+    <TableView fx:id="table" VBox.vgrow="ALWAYS">
+      <columns>
+        <!--<TableColumn fx:id="artNo" minWidth="7.5" prefWidth="75.0" text="Artikelnr." />
+        <TableColumn fx:id="key" minWidth="25" prefWidth="250.0" text="FERIX-Schlüssel" />
+        <TableColumn fx:id="price" minWidth="7.5" prefWidth="75.0" text="Preis (EUR)" />
+        <TableColumn fx:id="time" minWidth="7.5" prefWidth="75.0" text="Arbeitszeit (h)" />
+        <TableColumn fx:id="power" minWidth="7.5" prefWidth="75.0" text="Strom (A)" />
+        <TableColumn fx:id="weight" minWidth="7.5" prefWidth="75.0" text="Gewicht (kg)" />
+        <TableColumn fx:id="photo" minWidth="7.5" prefWidth="75.0" text="Photowert" />-->
+      </columns>
+    </TableView>
+    <HBox fx:id="addBox">
+      <children>
+        <!--<TextField fx:id="addArtNo" minWidth="7.5" prefWidth="75.0" promptText="Artikelnr." />
+        <TextField fx:id="addKey" minWidth="25" prefWidth="250.0" promptText="FERIX-Schlüssel" />
+        <TextField fx:id="addPrice" minWidth="7.5" prefWidth="75.0" promptText="Preis (EUR)" />
+        <TextField fx:id="addTime" minWidth="7.5" prefWidth="75.0" promptText="Arbeitszeit (h)" />
+        <TextField fx:id="addPower" minWidth="7.5" prefWidth="75.0" promptText="Strom (A)" />
+        <TextField fx:id="addWeight" minWidth="7.5" prefWidth="75.0" promptText="Gewicht (kg)" />
+        <TextField fx:id="addPhoto" minWidth="7.5" prefWidth="75.0" promptText="Photowert" />-->
+      </children>
+    </HBox>
+    <Button text="Hinzufügen" onAction="#handleAdd" />
+  </children>
+</VBox>
