@@ -57,13 +57,14 @@ public class CCEditorController implements Initializable
     {
       table.getColumns().forEach(column -> column.setPrefWidth((column.getMinWidth() / root.getMinWidth()) * newVal.doubleValue()));
       addBox.getChildren().stream()
-              .filter(field -> field instanceof TextField)
-              .forEach(field -> ((TextField) field).setPrefWidth((((TextField) field).getMinWidth() / root.getMinWidth()) * newVal.doubleValue()));
+              .filter(TextField.class::isInstance)
+              .map(TextField.class::cast)
+              .forEach(field -> field.setPrefWidth((field.getMinWidth() / root.getMinWidth()) * newVal.doubleValue()));
     });
     open.setAccelerator(new KeyCodeCombination(KeyCode.O, KeyCombination.CONTROL_DOWN));
-    open.setOnAction(a -> handleOpen(a));
+    open.setOnAction(this::handleOpen);
     MenuItem pseudoSearch = new MenuItem("Suchen");
-    pseudoSearch.setOnAction(a -> handleSearch(a));
+    pseudoSearch.setOnAction(this::handleSearch);
     pseudoSearch.setAccelerator(new KeyCodeCombination(KeyCode.F, KeyCombination.CONTROL_DOWN));
     search.setOnShown(e ->
     {
@@ -72,9 +73,9 @@ public class CCEditorController implements Initializable
     });
     search.getItems().add(pseudoSearch);
     save.setAccelerator(new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN));
-    save.setOnAction(a -> handleSave(a));
+    save.setOnAction(this::handleSave);
     close.setAccelerator(new KeyCodeCombination(KeyCode.W, KeyCombination.CONTROL_DOWN));
-    close.setOnAction(a -> handleClose(a));
+    close.setOnAction(this::handleClose);
 
     sample.getPropNames().forEach(name ->
     {
@@ -161,8 +162,8 @@ public class CCEditorController implements Initializable
   protected List<TextField> getAddFields()
   {
     return addBox.getChildren().stream()
-            .filter(child -> child instanceof TextField)
-            .map(child -> (TextField) child)
+            .filter(TextField.class::isInstance)
+            .map(TextField.class::cast)
             .collect(Collectors.toList());
   }
 
@@ -180,7 +181,7 @@ public class CCEditorController implements Initializable
   protected void handleAdd(ActionEvent a)
   {
     CSVRow row = sample.getNewInstance(getAddFields().stream()
-            .map(field -> field.getText())
+            .map(TextInputControl::getText)
             .collect(Collectors.joining(SEPARATOR)));
     if(row != null)
     {
@@ -248,8 +249,13 @@ public class CCEditorController implements Initializable
       Path source = lastFile.toPath();
       try
       {
-        Files.write(source, (Iterable<String>) table.getItems().stream()
-                .map(row -> row.toString())::iterator, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+        List<String> data = table.getItems().stream()
+                .map(CSVRow::toString)
+                .collect(Collectors.toList());
+        data.add(0, table.getColumns().stream()
+                .map(TableColumnBase::getText)
+                .collect(Collectors.joining("\t")));
+        Files.write(source, data, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
         CSVRow.setChanged(false);
       }
       catch(IOException ex)
